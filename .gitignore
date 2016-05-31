@@ -12,7 +12,6 @@ Homestead.json
 /database
 /public
 /storage
-/resources
 /tests
 .env.example
 artisan
