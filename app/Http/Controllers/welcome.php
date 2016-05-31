@@ -22,8 +22,8 @@ class welcome extends BaseController {
      */
     public function showProfile()
     {
-        $this->layout->content = View::make('user.profile');
-		// return view('greeting', ['name' => 'James']);
+        //$this->layout->content = View::make('user.profile');
+		 return view('pageone', ['name' => 'James']);
     }
 
 }
