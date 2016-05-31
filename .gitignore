@@ -1,6 +1,27 @@
 /bootstrap/compiled.php
 .env.*.php
 .env.php
+/vendor
+/node_modules
+/public/storage
+Homestead.yaml
+Homestead.json
+.env
+/bootstrap
+/config
+/database
+/public
+/storage
+/resources
+/tests
+.env.example
+artisan
+composer.json
+composer.lock
+gulpfile.js
+package.json
+phpunit.xml
+server.php
 
 # =========================
 # Operating System Files
