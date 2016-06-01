@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'zincadmin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -77,6 +77,28 @@ return [
             'prefix' => '',
             'schema' => 'public',
         ],
+		'zincadmin' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', 'localhost'),
+            'database'  => env('DB_DATABASE', 'admin247_zincadmin'),
+            'username'  => env('DB_USERNAME', 'root'),
+            'password'  => env('DB_PASSWORD', ''),
+            'charset'   => 'latin1',
+            'collation' => 'latin1_swedish_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+		'zincadminexternal' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', '37.188.110.4	'),
+            'database'  => env('DB_DATABASE', 'admin247_zincadmin'),
+            'username'  => env('DB_USERNAME', 'zincadmin'),
+            'password'  => env('DB_PASSWORD', 'RsAlGFTvCFkbPn50'),
+            'charset'   => 'latin1',
+            'collation' => 'latin1_swedish_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ]
 
     ],
 

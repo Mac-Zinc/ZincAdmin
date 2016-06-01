@@ -11,8 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'welcome@index');
 Route::get('List', 'welcome@showProfile');
+Route::get('load2', 'welcome@showProfile2');
+Route::get('load3', 'welcome@showProfile3');
