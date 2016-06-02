@@ -23,7 +23,54 @@ class welcome extends BaseController {
     public function index()
     {
         //$this->layout->content = View::make('user.profile');
-		 return view($this->layout,['Site_name' => 'Zinc Admin','Site_favicon' => 'Favicon.ico']);
+		
+		$data['Site_name'] = 'Zinc Admin';
+		$data['Site_favicon'] = 'Favicon.ico';
+		$data['Page_title'] = 'List';
+		$data['Page_title_info'] = 'List all the related data';
+		$data['Breadcrums'][0]['title'] = 'Home';
+		$data['Breadcrums'][0]['url'] = '/';
+		$data['Breadcrums'][1]['title'] = 'Tables';
+		$data['Breadcrums'][1]['url'] = '/';
+		$data['Breadcrums'][2]['title'] = 'List';
+		$data['table_title'] = 'Page List View';
+		$value=array('mod_id','mod_name','mod_title','mod_des','mod_tip');
+		$mod= DB::table('modules_mds')->select($value)->get(); 
+		$data['table_head']= $value;
+		$count_arr=count($value);
+		
+		$data['table_head'][$count_arr] = 'EDIT';
+		$data['table_head'][$count_arr+1] = 'DELETE';
+		
+		
+		foreach ($mod as $j=>$m)
+		{
+			 
+			for($i=0;$i<($count_arr+2);$i++){
+			
+				if($data['table_head'][$i]!='EDIT'&&$data['table_head'][$i]!='DELETE')
+				{
+					
+					$data['table_content'][$j][$i] = $m->{$value[$i]} ;
+					$data['table_content_url'][$j][$i] = '';
+				}
+				else
+				{
+					if($data['table_head'][$i]=='EDIT')
+					{
+						$data['table_content'][$j][$i] = $data['table_head'][$i];
+						$data['table_content_url'][$j][$i] = '/edituser/'.$m->{$value[0]};
+					}
+					if($data['table_head'][$i]=='DELETE')
+					{
+						$data['table_content'][$j][$i] = $data['table_head'][$i];
+						$data['table_content_url'][$j][$i] = '/deleteuser/'.$m->{$value[0]};
+					}
+				}
+			}
+		}
+		$res=$data;
+		 return view($this->layout,compact('res'));
     }
     public function showProfile()
     {

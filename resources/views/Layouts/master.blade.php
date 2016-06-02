@@ -5,7 +5,7 @@
     <!-- BEGIN HEAD -->
     <head>
         <meta charset="utf-8" />
-        <title>{{ $Site_name }}</title><!--dynamic-->
+        <title>{{ $res['Site_name'] }}</title><!--dynamic-->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -28,7 +28,7 @@
         <link href="<?php echo asset('assets/layouts/layout2/css/themes/blue.min.css');?>" rel="stylesheet" type="text/css" id="style_color" />
         <link href="<?php echo asset('assets/layouts/layout2/css/custom.min.css');?>" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="{{ $Site_favicon }}" /> </head><!--dynamic-->
+        <link rel="shortcut icon" href="{{ $res['Site_favicon'] }}" /> </head><!--dynamic-->
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
@@ -68,7 +68,7 @@
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
                   <!--   //load page content-->
-					@include('container')
+					@include('layouts.editable_table')
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
