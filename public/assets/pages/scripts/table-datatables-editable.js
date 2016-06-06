@@ -16,33 +16,44 @@ var TableDatatablesEditable = function () {
         function editRow(oTable, nRow) {
             var aData = oTable.fnGetData(nRow);
             var jqTds = $('>td', nRow);
-            jqTds[0].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[0] + '">';
+			for (var i = 0; i < edit_table_column_count-2; i++) {
+                 jqTds[i].innerHTML = '<input type="text" class="form-control " value="' + aData[i] + '">';
+            }
+			 jqTds[edit_table_column_count-2].innerHTML = '<a class="edit" href="">Save</a>';
+			 jqTds[edit_table_column_count-1].innerHTML = '<a class="cancel" href="">Cancel</a>';
+           /* jqTds[0].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[0] + '">';
             jqTds[1].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[1] + '">';
             jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[2] + '">';
             jqTds[3].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[3] + '">';
             jqTds[4].innerHTML = '<a class="edit" href="">Save</a>';
-            jqTds[5].innerHTML = '<a class="cancel" href="">Cancel</a>';
+            jqTds[5].innerHTML = '<a class="cancel" href="">Cancel</a>';*/
         }
 
         function saveRow(oTable, nRow) {
             var jqInputs = $('input', nRow);
+			for (var i = 0; i < edit_table_column_count-2; i++) {
+                 oTable.fnUpdate(jqInputs[i].value, nRow, i, false);
+            }
+			oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, edit_table_column_count-2, false);
+            oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, edit_table_column_count-1, false);
+			/*
             oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
             oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
             oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
             oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
             oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 4, false);
             oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 5, false);
+			*/
             oTable.fnDraw();
         }
 
         function cancelEditRow(oTable, nRow) {
             var jqInputs = $('input', nRow);
-            oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
-            oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
-            oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
-            oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
-            oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 4, false);
-            oTable.fnDraw();
+            for (var i = 0; i < edit_table_column_count-2; i++) {
+                 oTable.fnUpdate(jqInputs[i].value, nRow, i, false);
+            }
+			oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, edit_table_column_count-2, false);
+			oTable.fnDraw();
         }
 
         var table = $('#sample_editable_1');
@@ -89,7 +100,6 @@ var TableDatatablesEditable = function () {
 
         $('#sample_editable_1_new').click(function (e) {
             e.preventDefault();
-
             if (nNew && nEditing) {
                 if (confirm("Previose row not saved. Do you want to save it ?")) {
                     saveRow(oTable, nEditing); // save
@@ -105,9 +115,14 @@ var TableDatatablesEditable = function () {
                     return;
                 }
             }
+            var row         = {};
 
-            var aiNew = oTable.fnAddData(['', '', '', '', '', '']);
+            for (var i = 0; i < edit_table_column_count; i++) {
+                row[i] = '';
+            }
+            var aiNew = oTable.fnAddData(row);
             var nRow = oTable.fnGetNodes(aiNew[0]);
+			
             editRow(oTable, nRow);
             nEditing = nRow;
             nNew = true;

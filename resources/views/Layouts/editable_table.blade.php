@@ -99,6 +99,7 @@
                                             </div>
                                         </div>
                                     </div>
+									<?php echo "<script> var edit_table_column_count=".count($res['table_head']).";</script>";?>
                                     <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
                                         <thead>
                                             <tr>
@@ -114,11 +115,11 @@
 											 <tr>
 											@foreach ($res['table_head'] as $key2=>$table_head)
                                                
-                                                @if ($table_content[$key2]=='EDIT') 
+                                                @if ($table_content[$key2]=='Edit') 
 													<td>
                                                     <a class="edit" href="{{$res['table_content_url'][$key][$key2]}}">{{ $table_content[$key2] }}</a>
 													</td>
-												@elseif ($table_content[$key2]=='DELETE')
+												@elseif ($table_content[$key2]=='Delete')
 													<td>
                                                     <a class="delete" href="{{$res['table_content_url'][$key][$key2]}}">{{ $table_content[$key2] }}</a>
 													</td>
@@ -137,4 +138,13 @@
                             <!-- END EXAMPLE TABLE PORTLET-->
                         </div>
                     </div>
-              
+					 <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL PLUGINS -->
+		 <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="../assets/global/scripts/datatable.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+               <script src="../assets/pages/scripts/table-datatables-editable.js" type="text/javascript"></script>
