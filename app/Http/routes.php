@@ -15,3 +15,14 @@ Route::get('/', 'welcome@index');
 Route::get('List', 'welcome@showProfile');
 Route::get('load2', 'welcome@showProfile2');
 Route::get('load3', 'welcome@showProfile3');
+
+Route::get('login', 'Login@showLoginPage');
+Route::post('login', 'Login@loginValidate');
+Route::post('fpassword', 'Login@fpassword');
+Route::get('logout', 'Login@logout');
+
+Route::get('AccessLevel', 'AccessLevel@getAccessLevel');
+Route::get('AccessLevel/{id}', 'AccessLevel@getAccessLevelAreas');
+Route::post('AccessLevelSection', 'AccessLevel@getAccessLevelSection');
+Route::post('AccessLevelSectionBlock', 'AccessLevel@getAccessLevelFields');
+Route::post('AccessLevelFormSave', 'AccessLevel@getAccessLevelFormSave');
