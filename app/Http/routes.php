@@ -26,3 +26,13 @@ Route::get('AccessLevel/{id}', 'AccessLevel@getAccessLevelAreas');
 Route::post('AccessLevelSection', 'AccessLevel@getAccessLevelSection');
 Route::post('AccessLevelSectionBlock', 'AccessLevel@getAccessLevelFields');
 Route::post('AccessLevelFormSave', 'AccessLevel@getAccessLevelFormSave');
+
+Route::get('ContractForm', 'Contracts@getContractForm');
+
+Route::get('TimeSheet', 'TimeSheet@getTimeSheet');
+
+Route::group(['prefix' => 'List'], function(){
+	Route::get('ManningLevels/{weekNo?}', 'ManningLevels@getContractForm');
+});
+
+	

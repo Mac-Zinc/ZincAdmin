@@ -39,9 +39,11 @@
         <div class="container">
             <div class="content">
                 <div class="title">Laravel 5 dp</div>
+                @if ($mod)
 				@foreach ($mod as $m)
-    <p>This is MOD - {{ $m->mod_name }}</p>
-@endforeach
+                    <p>This is MOD - {{ $m->mod_name }}</p>
+                @endforeach
+                @endif
             </div>
         </div>
     </body>

@@ -16,6 +16,9 @@
         <link href="<?php echo asset('assets/global/plugins/simple-line-icons/simple-line-icons.min.css');?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo asset('assets/global/plugins/bootstrap/css/bootstrap.min.css');?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css');?>" rel="stylesheet" type="text/css" />
+        <link href="<?php echo asset('assets/global/plugins/select2/css/select2.min.css');?>" rel="stylesheet" type="text/css" />
+        <link href="<?php echo asset('assets/global/plugins/jquery-ui/jquery-ui.min.css');?>" rel="stylesheet" type="text/css"></link>
+        <link href="<?php echo asset('assets/global/plugins/jquery-timepicker/jquery.timepicker.css');?>" rel="stylesheet" type="text/css"></link>
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- END PAGE LEVEL PLUGINS -->
@@ -67,6 +70,16 @@
         <script src="<?php echo asset('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
         <script src="<?php echo asset('assets/global/plugins/jquery.blockui.min.js');?>" type="text/javascript"></script>
         <script src="<?php echo asset('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js');?>" type="text/javascript"></script>
+        <script src="<?php echo asset('assets/global/plugins/select2/js/select2.full.min.js');?>" type="text/javascript"></script>
+
+        <script src="<?php echo asset('assets/global/plugins/jquery-validation/js/jquery.validate.min.js');?>" type="text/javascript"></script>
+        <script src="<?php echo asset('assets/global/plugins/jquery-validation/js/additional-methods.min.js');?>" type="text/javascript"></script>
+
+        <script src="<?php echo asset('assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js');?>" type="text/javascript"></script>
+        <script src="<?php echo asset('assets/global/plugins/jquery-ui/jquery-ui.min.js');?>" type="text/javascript"></script>
+        <script src="<?php echo asset('assets/global/plugins/jquery-timepicker/jquery.timepicker.min.js');?>" type="text/javascript"></script>
+
+        
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- END PAGE LEVEL PLUGINS -->
@@ -75,6 +88,8 @@
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="<?php echo asset('assets/pages/scripts/form-samples.min.js');?>" type="text/javascript"></script>
+        <script src="<?php echo asset('assets/pages/scripts/form-wizard.js');?>" type="text/javascript"></script>
+        <script src="<?php echo asset('assets/modules/contracts/form-wizard.js');?>" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="<?php echo asset('assets/layouts/layout2/scripts/layout.min.js');?>" type="text/javascript"></script>
@@ -139,11 +154,20 @@
 
         var dataToSend;
         $('.menueClickHijack').click( function( event ){
-           event.preventDefault();
+            event.preventDefault();
             href = $(this).attr("href");
             $.get( href, function( data ) {
                 $( ".page-content" ).html( data );
                 //alert( "Load was performed." );
+            });
+            return false;
+        });
+
+        $('.page-content').on('click','.menueClickHijack',function(e){ 
+            event.preventDefault();
+            href = $(this).attr("href");
+            $.get( href, function( data ) {
+                $( ".page-content" ).html( data );                
             });
             return false;
         });
@@ -307,8 +331,85 @@
 
         
                
-            
+ /*******************************************/
 
+    $('.page-content').on('click','.buttonLiMLQuickView',function(e){
+        value = $(this).data('value');
+        $(this).parent().next().val(value).trigger('change');
+    });
+
+    $('.page-content').on('change','.MLQuickView',function(e){
+        //console.log($(this).parents('span.columnML'));
+        array = ['MLWhite', 'MLGreen', 'MLOrange', 'MLRed'];
+        value = $(this).val();
+        triggeredEle = $(this);  
+        $( "#dialog-confirm" ).dialog({
+          resizable: false,
+          dialogClass: "no-close",
+          closeOnEscape: false,
+          height:140,
+          modal: true,
+          buttons: {
+            Yes: function() {                    
+                $( this ).dialog( "close" );
+                triggeredEle.parents('span.columnML').find('span.MLColourCode').removeClass('MLGreen MLRed MLOrange').addClass(array[value]);
+                triggeredEle.parent('span').find('button.buttonMLQuickView').html(triggeredEle.find('option:selected').text());
+                triggeredEle.data('previous',triggeredEle.find('option:selected').val());
+            },
+            No: function() {
+                triggeredEle.val(triggeredEle.data('previous'));
+                $( this ).dialog( "close" );
+            }
+          }
+        });    
+    
+    });           
+
+    $('.page-content').on('click','.MLMoreData',function(){
+        var $elie = $(this), degree = $elie.data('rotate'), timer;
+        //
+        $('.MLMoreDataOpen').removeClass('MLMoreDataOpen').click();
+       rotate();
+       function rotate() {
+        if($elie.data('rotate') == 0){
+          $elie.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});  
+          $elie.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
+          timer = setTimeout(function() {
+              ++degree; 
+              if(degree == 90){
+                $elie.data('rotate',90);
+                $elie.addClass('MLMoreDataOpen');
+                $elie.parents('div.rowML').next('div.MLQuickEdit').addClass('MLQuickEditOpen').slideDown();               
+              }else{
+                rotate();
+              } 
+          },3);
+        }else{
+            $elie.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});  
+          $elie.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
+          timer = setTimeout(function() {
+              --degree; 
+              if(degree == 0){
+                $elie.data('rotate',0);
+                $elie.removeClass('MLMoreDataOpen');
+                $elie.parents('div.rowML').next('div.MLQuickEdit').removeClass('MLQuickEditOpen').slideUp();
+              }else{
+                rotate();
+              }
+          },3);
+        }
+        
+    }
+    });  
+
+    $('.page-content').on('click','span.weekNav >span > a',function(e){ 
+        e.preventDefault();
+        href = $(this).attr("href");
+        $.get( href, function( data ) {
+            $( ".page-content" ).html( data );            
+        });
+        return false;
+    });
         
 
     </script>  
