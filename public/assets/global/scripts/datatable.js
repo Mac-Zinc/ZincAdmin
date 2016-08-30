@@ -41,7 +41,7 @@ var Datatable = function() {
                 resetGroupActionInputOnSuccess: true,
                 loadingMessage: 'Loading...',
                 dataTable: {
-                    "dom": "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-responsive't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
+                    "dom": "<'row'<'col-md-8 col-sm-12'plif><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-responsive't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
                     "pageLength": 10, // default records per page
                     "language": { // language settings
                         // metronic spesific
@@ -67,7 +67,7 @@ var Datatable = function() {
                     "orderCellsTop": true,
                     "columnDefs": [{ // define columns sorting options(by default all columns are sortable extept the first checkbox column)
                         'orderable': false,
-                        'targets': [0]
+                        'targets': [0 , -1]
                     }],
 
                     "pagingType": "bootstrap_extended", // pagination type(bootstrap, bootstrap_full_number or bootstrap_extended)
@@ -80,6 +80,9 @@ var Datatable = function() {
                         "type": "POST", // request type
                         "timeout": 20000,
                         "data": function(data) { // add request parameters before submit
+                            $('textarea.dataTableExtraParams, select.dataTableExtraParams, input.dataTableExtraParams:not([type="radio"],[type="checkbox"])').each(function() {
+                                ajaxParams[$(this).attr("name")] = $(this).val();
+                            });
                             $.each(ajaxParams, function(key, value) {
                                 data[key] = value;
                             });

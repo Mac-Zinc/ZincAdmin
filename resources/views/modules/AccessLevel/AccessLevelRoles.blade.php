@@ -1,10 +1,11 @@
-<h6> Access Permissions </h6>
+@include("layouts.breadcrums")
+<div class="msgDisplayArea"></div>
 <form class='accessLevelForm'>
 <input type="hidden" name="_token" value="{{ csrf_token() }}" class='csrf_token'>
 
-<div class="form-group">
-    <label class="col-md-3 control-label">Access Permissions Type</label>
-    <div class="col-md-9">
+<div class="form-group row">
+	<div class='col-md-3'><label class="control-label">Access Permissions Type</label></div>    
+    <div class="col-md-4">
         <div class="mt-radio-inline">
             <label class="mt-radio">
                 <input type="radio" name="apType" class="apType" value='1' > User Level
@@ -23,9 +24,10 @@
 </div>
 
 @if ($roles)
-	<div class="form-group accessLevelRoleSelectDiv hidden">
-		<label class="col-md-3 control-label">User Level</label>
-		<div class="col-md-9">
+	<div class="form-group accessLevelRoleSelectDiv hidden row">
+	<div class='col-md-3'><label class="control-label">User Level</label></div>
+		
+		<div class="col-md-3">
 	    	<select class="form-control edited" id="accessLevelRoleSelect">
 	        	<option value="">Please Select a User Level</option>
 	        
@@ -38,10 +40,10 @@
 	</div>
 @endif	
 @if ($usertype)
-	<div class="form-group accessLevelUserTypeSelectDiv hidden">
-		<label class="col-md-3 control-label">User Type</label>
-		<div class="col-md-9">
-	    	<select class="form-control edited" id="accessLevelRoleSelect">
+	<div class="form-group accessLevelUserTypeSelectDiv hidden row">
+		<div class='col-md-3'><label class="control-label">User Type</label></div>
+		<div class="col-md-3">
+	    	<select class="form-control edited" id="accessLevelUserTypeSelect">
 	        	<option value="">Please Select a User Type</option>
 	        
 	        	@foreach ($usertype as $key=>$val)
@@ -53,10 +55,10 @@
 	</div>
 @endif
 @if ($allusers)
-	<div class="form-group accessLevelUsersSelectDiv hidden">
-		<label class="col-md-3 control-label">User </label>
-		<div class="col-md-9">
-	    	<select class="form-control edited" id="accessLevelRoleSelect">
+	<div class="form-group accessLevelUsersSelectDiv hidden row">
+		<div class='col-md-3'><label class="control-label">User </label></div>
+		<div class="col-md-3">
+	    	<select class="form-control edited" id="accessLevelUserSelect">
 	        	<option value="">Please Select a User</option>
 	        
 	        	@foreach ($allusers as $key=>$val)

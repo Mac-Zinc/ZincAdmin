@@ -53,7 +53,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN LOGO -->
         <div class="logo">
             <a href="index.html">
-                <img src="../assets/pages/img/logo-big.png" alt="" /> </a>
+                <img src="images/default/logo.png" alt="" /> </a>
         </div>
         <!-- END LOGO -->
         <!-- BEGIN LOGIN -->
@@ -404,7 +404,7 @@ License: You must have a valid license purchased only from themeforest(the above
             </form>
             <!-- END REGISTRATION FORM -->
         </div>
-        <div class="copyright"> 2014 © Metronic. Admin Dashboard Template. </div>
+        <div class="copyright">  </div>
         <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
 <script src="../assets/global/plugins/excanvas.min.js"></script> 

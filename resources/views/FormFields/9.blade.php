@@ -1,8 +1,18 @@
-<select class="form-control tag-field {{$fields->tbl_fld_class}}" name="{{$fields->tbl_fld_tbl_col_name}}" id="{{$fields->tbl_fld_tbl_col_name}}" >
-	
-	<option value='1'>Per Day</option>
-	<option value='2'>Per Week</option>
-	<option value='3'>Per Month</option>
-	<option value='4'>tbc</option>
+<?php $dropDownOptions = $moduleFields->{$sec}->{ "dropDownOptions_".$fieldId }; 
+if(isset($moduleFields->{$sec}->{ "displayValue_".$fieldId })){
+	$value = $moduleFields->{$sec}->{ "displayValue_".$fieldId }; 
+}else{ $value = ''; }
+$selected = 'selected="selected"';
+?>
+
+<select class="form-control {{$fields->tbl_fld_class}}" name="{{$fields->tbl_fld_tbl_col_name}}" id="{{$fields->tbl_fld_tbl_col_name}}" >
+
+	@if($fields->tbl_fld_place_holder != '')
+	<option value="">{{$fields->tbl_fld_place_holder}}</option>
+	@endif
+	@foreach($dropDownOptions as $key => $keyValue)
+
+	<option value='{{$keyValue->value}}' @if($keyValue->value == $value) {{$selected}}@endif>{{$keyValue->text}}</option>
+	@endforeach
 	
 </select>

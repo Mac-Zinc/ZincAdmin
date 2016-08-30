@@ -5,9 +5,9 @@
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="/">
-                        <img src="../assets/layouts/layout2/img/logo-default.png" alt="logo" class="logo-default" /> </a>
+                        <img src="images/default/logo.png" alt="logo" class="logo-default site_logo" /> </a>
                     <div class="menu-toggler sidebar-toggler">
-                        <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+                        <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header ../assets/layouts/layout2/img/logo-default.png-->
                     </div>
                 </div>
                 <!-- END LOGO -->
@@ -16,7 +16,7 @@
                 <!-- END RESPONSIVE MENU TOGGLER -->
                 <!-- BEGIN PAGE ACTIONS -->
                 <!-- DOC: Remove "hide" class to enable the page header actions -->
-                <div class="page-actions">
+                <div class="page-actions hide">
                     <div class="btn-group">
                         <button type="button" class="btn btn-circle btn-outline red dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-plus"></i>&nbsp;
@@ -57,7 +57,7 @@
                 <div class="page-top">
                     <!-- BEGIN HEADER SEARCH BOX -->
                     <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-                    <form class="search-form search-form-expanded" action="page_general_search_3.html" method="GET">
+                    <form class="search-form search-form-expanded hide" action="page_general_search_3.html" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search..." name="query">
                             <span class="input-group-btn">
@@ -362,7 +362,7 @@
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                             <li class="dropdown dropdown-user">
                                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                    <img alt="" class="img-circle" src="../assets/layouts/layout2/img/avatar3_small.jpg" />
+                                    <img alt="" class="img-circle" src="images/{{$user_info['image_usr']}}" />
                                     <span class="username username-hide-on-mobile"> {{$user_info['disp_name']}} </span>
                                     <i class="fa fa-angle-down"></i>
                                 </a>

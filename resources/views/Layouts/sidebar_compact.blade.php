@@ -3,8 +3,9 @@
     @foreach ($res['sidebar'] as $key=>$value)
     <li class="nav-item start ">
          <a href="{{$value['url']}}" class="nav-link nav-toggle {{$value['class']}}"> 
-            <i class="icon-home"></i>
+            <i class="{{$value['icon']}}"></i>
             <span class="title">{{$value['name']}}</span>
+            <span class="sele"></span>
             <span class="arrow"></span>
         </a> 
         @if ($value['groupModules'])

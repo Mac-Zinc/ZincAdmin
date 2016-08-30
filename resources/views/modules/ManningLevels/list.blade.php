@@ -1,12 +1,4 @@
-<style type="text/css">
-	span.weekNav {
-    	float: right;
-	}
-	div.weekTitleBar {
-    	background-color: #d3d3d3;
-    	padding: 5px 10px;
-    	font-weight: bold;
-	}
+<style type="text/css">	
 	span.filterAttachRight{
 		float: right;
 	}
@@ -18,7 +10,7 @@
 	}
 	span.columnML {
 	    display: table-cell;
-	    width: 60px;
+	    width: 83px;
 	    border-style: solid;
 	    border-width: 1px;
 	    padding: 5px;
@@ -26,6 +18,7 @@
 	div.listRowsContainer{
 		padding-top: 10px;
     	padding-bottom: 6px;
+    	background-color: #fff;
 	}
 	div.tabML{
 
@@ -35,7 +28,7 @@
 	}
 	span.MLColourCode {
 	    display: inline-block;
-	    width: 31px;
+	    width: 50px;
 	    height: 15px;
 	    padding-left: 5px;
 	    padding-right: 5px;
@@ -49,10 +42,18 @@
 	span.MLOrange {
     	background-color: orange;
 	}
+	span.MLYellow {
+    	background-color: yellow;
+	}
+	span.MLGrey {
+    	background-color: grey;
+	}
 	span.MLMoreData {
 	    display: inline-block;
 	    height: 15px;
 	    width: 14px;
+	    -webkit-transition: all 1s ease; /* For Safari 3.1 to 6.0 */
+    	transition: all 1s ease;
 	}
 	.ui-dialog .ui-dialog-content {
 	    position: relative;
@@ -79,6 +80,7 @@
 	}
 	.z-index {
     	z-index: 1;
+    	position: absolute;
 	}
 	.z-index li {
 	    font-size: smaller;
@@ -89,11 +91,11 @@
 	div.MLQuickEdit.show_hide.MLQuickEditOpen {
 	    border-style: solid;
 	    border-width: 1px;
-	    width: 1050px;
+	    width: 1355px;
 	}
 	.MLQuickEditRow > span {
 	    float: left;
-	    width: 95.2px;
+	    width: 110.2px;
 	    font-weight: bold;
 	    font-size: smaller;
 	    text-align: center;
@@ -119,20 +121,7 @@
 	    border-top: 1px solid black! important;
 	    margin: 0px !important;
 	}
-	span.weekNavPrevious {
-    	margin-right: 25px;
-	}
-	span.weekNavNext {
-    	margin-left: 25px;
-	}
-	span.weekNav>span>a {
-    	color: black !important;
-    	font-weight: 500;
-	}
-	span.weekNav>span>a:hover {
-    	color: blue !important;
-    	text-decoration: none;
-	}
+	
 	span.MLDriverLP {
     	display: block !important;
 	}
@@ -151,21 +140,54 @@
 	.sorting {
 	    background: url(/assets/global/plugins/datatables/images/sort_both.png) center right no-repeat;
 	}
+	.ui-button-text-only .ui-button-text {
+    	padding: 0 !important; 
+	}
+
+	input.MLQuickEditRowInput.full_name {
+	    width: 135px;
+	}
+	.MLQuickEditRow span:nth-child(2) {
+	    width: 140px;
+	}
+	.MLMoreDataOpen {
+	    /* Firefox */
+	-moz-transform: rotate(90deg);
+	/* WebKit */
+	-webkit-transform: rotate(90deg) ;
+	/* Opera */
+	-o-transform: rotate(90deg);
+	/* Standard */
+	transform: rotate(90deg);
+	}
+	.overlay {
+	    position: absolute;
+	    width: 1050px;
+	    opacity: 0.7;
+	    background-color: snow;
+	    height: 83px;
+	    text-align: center;
+	    color: black;
+	    line-height: 83px;
+	    font-size: 25px;
+	}
+	select.MLQuickEditRowInput {
+	    height: 25px;
+	    width: 110px;
+	}
+	.timesheet, .self_bill, .invoiced {
+    	width: 80px !important;
+	}
 </style>
-@include("Layouts.breadcrums")
+@include("layouts.breadcrums")
 <div class=''>
-	<div class="weekTitleBar"> <i class="icon-user"></i> CURRENT MANNING LEVEL 
-		<span class="weekNav">
-			<span class="weekNavPrevious"><a href='List/ManningLevels/{{$currentWeekNo - 1 }}' ><< WEEK {{$currentWeekNo - 1 }}</a> </span>
-			<span class="weekNavCurrent">WEEK {{$currentWeekNo}} </span>
-			<span class="weekNavNext"><a href='List/ManningLevels/{{$currentWeekNo + 1 }}' > WEEK {{$currentWeekNo + 1 }} >></a></span>
-		<span>
-	</div>
+	<input type="hidden" name="_token" value="{{ csrf_token() }}" class='csrf_token'>
+	@include("layouts.current_week_bar")
 	<div class='filterBar'>
 		<span class=''>Show 
-			<select name='' class=''>
+			<select name='recPerPage' class='recPerPage'>
 				<option value='1'>1</option>
-				<option value='10'>10</option>
+				<option value='10' selected='selected'>10</option>
 				<option value='50'>50</option>
 				<option value='100'>100</option>
 				<option value='150'>150</option>
@@ -185,7 +207,7 @@
 				@endforeach
 			</select>
 		</span>
-		<span class='filterAttachRight'>Driver/LP Number Quick Find <input type="text" name=""/></span>
+		<span class='filterAttachRight'>Driver/LP Number Quick Find <input type="text" name="" class='driverLPFilter'/></span>
 	</div>
 	<!--<div class='tabML'>
 		<ul class="nav nav-tabs">

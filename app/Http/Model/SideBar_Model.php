@@ -10,10 +10,10 @@ class SideBar_Model extends Model
 	
 	public function GenerateSideBarTemplate($id)
     {       
-		$value1=array('m_id','mod_title','mod_url');
+		$value1=array('m_id','mod_title','mod_url','mod_ico');
 		$value2=array('mmgl_mod_id','mmgl_mod_grp_id');
 		$value3=array('mod_grp_id','mod_grp_title');
-		$mod1= DB::table('modules_mds')->select($value1)->orderBy('mod_order', 'asc')->get();
+		$mod1= DB::table('modules_mds')->select($value1)->where('device_availability','=',1)->orderBy('mod_order', 'asc')->get();
 		$mod2= DB::table('mod_mod_grp_link')->select($value2)->orderBy('mmgl_mod_grp_id', 'asc')->get(); 
 		$mod3= DB::table('module_groups')->select($value3)->orderBy('mod_grp_id', 'asc')->get(); 
 		
@@ -37,6 +37,7 @@ class SideBar_Model extends Model
 						$temp = array();					
 						$temp['name'] = $moduleGrpArr["'{$oldGrpId}'"];
 						$temp['url'] = 'javascript:;';
+						$temp['icon'] = '';//$value->{$value1[3]};						
 						$temp['class'] = 'T';
 						$temp['groupModules'] = $moduleName;
 						array_push($data,$temp);
@@ -47,12 +48,14 @@ class SideBar_Model extends Model
 				$modNameVal['name'] = $moduleNameArr["'{$value->{$value2[0]}}'"];
 				$modNameVal['url'] = $modURL["'{$value->{$value2[0]}}'"];
 				$modNameVal['class'] = 'menueClickHijack';
+				$modNameVal['icon'] = '';//'menueClickHijack';
 				array_push($moduleName,$modNameVal);			
 			}
 			if($oldGrpId != -1){
 				$temp = array();
 				$temp['groupName'] = $moduleGrpArr["'{$oldGrpId}'"];
 				$temp['class'] = '';
+				$temp['icon'] = '';//$value->{$value1[3]};
 				$temp['groupModules'] = $moduleName;
 				array_push($data,$temp);
 				$oldGrpId = $value->{$value2[1]};
@@ -64,6 +67,7 @@ class SideBar_Model extends Model
 				$temp = array();					
 				$temp['name'] = $value->{$value1[1]};
 				$temp['url'] =  $value->{$value1[2]};
+				$temp['icon'] = $value->{$value1[3]};
 				$temp['class'] = 'menueClickHijack';
 				$temp['groupModules'] = array(); //$moduleName;
 				array_push($data,$temp);

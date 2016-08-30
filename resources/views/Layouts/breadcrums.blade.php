@@ -7,7 +7,7 @@
         @foreach ($breadcrums['Breadcrums'] as $key=>$bread)
             <li>
             @if ($key == 0)
-                <i class="icon-home"></i>
+                <i class="fa fa-home"></i>
             @endif
             @if (isset($bread['url']))
                 <a href="{{$bread['url']}}" class='menueClickHijack'>{{$bread['title']}}</a>
@@ -44,3 +44,5 @@
     </div>
     @stop
 </div>
+
+<script type="text/javascript"> var dataTableControler = null; </script>

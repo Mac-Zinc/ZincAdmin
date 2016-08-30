@@ -40,6 +40,7 @@ class welcome extends BaseController {
             return Redirect::to('login');
         }
         $user_info['disp_name']=Auth::user()->firstname_usr;
+        $user_info['image_usr']=Auth::user()->image_usr;
         //var_dump($user_info); exit;
 		$data_site=$this->MasterTemplate_Model->GenerateSiteTemplate(0);
 		$data_page=$this->ContainerTemplate_Model->GeneratePageDetails(0);

@@ -1,8 +1,9 @@
 
 @if ($section)
-	<div class="form-group accessLevelSectionSelectDiv">
-		<label class="col-md-3 control-label">Section</label>
-		<div class="col-md-9">
+	<div class="form-group accessLevelSectionSelectDiv row">
+		<div class='col-md-3'><label class="control-label">Section</label></div>
+		
+		<div class="col-md-3">
 	    	<select class="form-control edited" id="accessLevelSectionSelect">
 	       		<option value="">Please Select a Section</option>
 	        

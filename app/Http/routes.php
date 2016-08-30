@@ -25,14 +25,66 @@ Route::get('AccessLevel', 'AccessLevel@getAccessLevel');
 Route::get('AccessLevel/{id}', 'AccessLevel@getAccessLevelAreas');
 Route::post('AccessLevelSection', 'AccessLevel@getAccessLevelSection');
 Route::post('AccessLevelSectionBlock', 'AccessLevel@getAccessLevelFields');
-Route::post('AccessLevelFormSave', 'AccessLevel@getAccessLevelFormSave');
 
-Route::get('ContractForm', 'Contracts@getContractForm');
 
-Route::get('TimeSheet', 'TimeSheet@getTimeSheet');
+
+
+
+Route::get('Dashboard', 'CRM@getCRMList');
+
 
 Route::group(['prefix' => 'List'], function(){
 	Route::get('ManningLevels/{weekNo?}', 'ManningLevels@getContractForm');
+	Route::post('ManningLevels/{weekNo?}', 'ManningLevels@getContractForm');
+	Route::post('ManningLevels/page/load', 'ManningLevels@getRecords');
+	//Route::post('ManningLevels/page/driverLPFilter', 'ManningLevels@getRecordsDriverLPFilter');
+
+	Route::get('Organisation', 'Organisation@getOrganisationList');
+	Route::get('Contract', 'Contracts@getContractList');
+	Route::get('CRM', 'CRM@getCRMList');
+	Route::get('Documents', 'DocumentsHub@getDocumentsHubList');
+	Route::get('TimeSheet/{weekNo?}', 'TimeSheet@getTimeSheetList');
+
 });
 
-	
+Route::group(['prefix' => 'Save'], function(){	
+	Route::post('ManningLevels/MLQuickView', 'ManningLevels@saveMLQuickView');
+	Route::post('ManningLevels/MLMoreData', 'ManningLevels@getMLQuickView');
+
+	Route::post('TimeSheet', 'TimeSheet@saveWeeklyTimeSheet');
+	Route::post('AccessLevelFormSave', 'AccessLevel@getAccessLevelFormSave');
+
+	Route::post('Contract', 'Contracts@saveContractsForm');
+	Route::post('Organisation', 'Organisation@saveOrganisationForm');
+	Route::post('CRM', 'CRM@saveCRMForm');
+});
+
+Route::group(['prefix' => 'Form'], function(){	
+	Route::get('Organisation/{id?}', 'Organisation@getOrganisationForm');
+	Route::get('Contract/{id?}', 'Contracts@getContractForm');
+	Route::get('CRM/{id?}', 'CRM@getCRMForm');
+	Route::get('TimeSheet/{weekNo?}/{usr_id?}', 'TimeSheet@getTimeSheetForm');
+});
+
+Route::get('images/{folder}/{filename}', 'FileRequestHandel@imageFile');
+
+Route::post('Files/', 'FileRequestHandel@sendFiles');
+Route::post('GetFiles/', 'FileRequestHandel@getFiles');
+Route::get('download/document/{fileId}', 'FileRequestHandel@downloadFile');
+
+//Route::post('demo/table_ajax', 'CRM@table_ajax');
+
+
+Route::group(['prefix' => 'ListRowsAjax'], function(){	
+	Route::post('Organisation', 'Organisation@listRowsAjax');
+	Route::post('Contract', 'Contracts@listRowsAjax');
+	Route::post('CRM', 'CRM@listRowsAjax');
+	Route::post('Documents', 'DocumentsHub@listRowsAjax');
+	Route::post('TimeSheet', 'TimeSheet@listRowsAjax');
+});
+///105/
+
+Route::group(['prefix' => 'Edit'], function(){
+	//Route::group(['prefix' => 'CRM'], function(){});
+	Route::post('CRM/{fieldID}/{pKey}/{ref_id?}', 'CRM@gridSave');
+});
