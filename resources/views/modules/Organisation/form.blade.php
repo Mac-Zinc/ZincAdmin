@@ -1,10 +1,6 @@
 <?php $fileInclude = $moduleFields->fileInclude; //var_dump($fileInclude) ?>
 @include("layouts.script_file_include")
-<style type="text/css">
-	.lblTxtHidden {
- 	   color: white;
-	}
-</style>
+
 @include("layouts.breadcrums")
 <div id="organisation_form_wiz" class="portlet light ">
 <div class="portlet-body form">

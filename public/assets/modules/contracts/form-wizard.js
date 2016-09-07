@@ -177,15 +177,30 @@ var NewFormWizard = function () {
             $('#'+formId+'_wiz .button-submit').click(function () {
                 if (form.valid() == true) {                
                     newhref = postUrl;
-                    data = $('#'+formId).serializeArray();
+                    form = $('form')[0];
+                    data = new FormData(form);
+                    //data = $('#'+formId).serializeArray();
                     display_screen_loader();
-                    $.post( newhref, data, function( data ) {
+                    $.ajax({
+                            url: newhref,
+                            type: 'POST',
+                            data: data,
+                            async: false,
+                            success: function (data) {
+                                hide_screen_loader();     
+                               if(data.status == 1){
+                                   $( ".page-content" ).load( data.url ); 
+                               }      
+                            },
+                            cache: false,
+                            contentType: false,
+                            processData: false
+                        });
+
+                    //$.post( newhref, data, function( data ) {});
                         
-                        hide_screen_loader();     
-                        if(data.status == 1){
-                            $( ".page-content" ).load( data.url ); 
-                        }      
-                    });
+                       
+                    
                 }    
             });
 

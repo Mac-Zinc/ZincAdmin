@@ -46,7 +46,9 @@ class CRM extends Controller{
 		$data['Breadcrums'][1]['url'] = '/List/CRM';
 		if($bool){
 			$data['Breadcrums'][2]['title'] = 'Edit';
-			$data['Breadcrums'][2]['url'] = '/Form/CRM';
+			if( $this->CRM_Model->getAddButtonStatus() ){ 
+				$data['Breadcrums'][2]['url'] = '/Form/CRM';
+			}			
 		}
 		return $data;
 	}

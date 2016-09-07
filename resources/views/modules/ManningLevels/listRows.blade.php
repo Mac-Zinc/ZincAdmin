@@ -47,7 +47,7 @@
 			</span>
 			<?php $class='shrink'; ?>		
 			@for( $j = 0; $j < 21 ; $j++)			
-				<span class='columnML {{$class}}' data-date="{{$startNEndDate[$j]['date']}}">
+				
 				<?php
 					$d1 = $startNEndDate[$j]['date'];
 					$d2 = $drivervalue->id_usr;
@@ -62,32 +62,40 @@
 					$d4 = $MLForDayClr[$d3] ;
 					
 				?>
-					<span class='MLColourCode {{$d4}}'></span>
-					@if ($j > 6 && $j < 14)
-					<span class='MLMoreData' data-rotate='0' data-rowid = '{{$d5}}'>
-					    <i class='icon-social-youtube'></i>
-					</span>
-					<span>
-						<button class='buttonMLQuickView' >{{$MLForDay[$d3]}}</button>
-						<ul class='z-index'>
-							@for( $k = 1; $k < count($MLForDay) ; $k++)
-							<li data-value='{{$k}}' class='buttonLiMLQuickView'>{{$MLForDay[$k]}}</li>
-							@endfor
-							
-						</ul>
-						<select class='MLQuickView hidden' data-previous='1' data-rowid = '{{$d5}}'>
-							@for( $k = 1; $k < count($MLForDay) ; $k++)
-							<option value='{{$k}}'>{{$MLForDay[$k]}}</option>
-							@endfor							
-						</select>
-					</span>
-					@endif
-					@if( $j == 6)
-					<?php  $class=''; ?>
-					@elseif ( $j == 13)
-					<?php  $class='shrink'; ?>
-					@endif
+				
+				<span class='columnML {{$class}}' data-date="{{$startNEndDate[$j]['date']}}">
+				@if($d5 != -1)
+					<span class='MLColourCode {{$d4}}' data-mlforday='{{$d3}}'></span>
+					@if( $currentWeekNo >= date('W'))
+						@if ($j > 6 && $j < 14)
+						<span class='MLMoreData' data-rotate='0' data-rowid = '{{$d5}}'>
+						    <i class='icon-social-youtube'></i>
+						</span>
+						
+						<span>
+							<button class='buttonMLQuickView' >{{$MLForDay[$d3]}}</button>
+							<ul class='z-index'>
+								@for( $k = 1; $k < count($MLForDay) ; $k++)
+								<li data-value='{{$k}}' class='buttonLiMLQuickView'>{{$MLForDay[$k]}}</li>
+								@endfor
+								
+							</ul>
+							<select class='MLQuickView hidden' data-previous='1' data-rowid = '{{$d5}}'>
+								@for( $k = 1; $k < count($MLForDay) ; $k++)
+								<option value='{{$k}}'>{{$MLForDay[$k]}}</option>
+								@endfor							
+							</select>
+						</span>
+						@endif
+					@endif					
+				@endif
+				@if( $j == 6)
+				<?php  $class=''; ?>
+				@elseif ( $j == 13)
+				<?php  $class='shrink'; ?>
+				@endif
 				</span>
+				
 			@endfor			
 		</div>
 		<div class='MLQuickEdit show_hide'>

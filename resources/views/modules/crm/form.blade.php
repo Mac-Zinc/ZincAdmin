@@ -1,10 +1,14 @@
 <?php $fileInclude = $moduleFields->fileInclude; //var_dump($fileInclude) ?>
 @include("layouts.script_file_include")
-
+<style type="text/css">
+	#tab_6 .lblTxtHidden {
+	    display: none;
+	}
+</style>
 @include("layouts.breadcrums")
 <div class='crm_form_container'>
 	<div id="crm_form_wiz" class="portlet light ">
-	<form method="POST" id="crm_form" action="#" class="form-horizontal1" novalidate="novalidate">
+	<form method="POST" id="crm_form" action="#" class="form-horizontal1" novalidate="novalidate" enctype="multipart/form-data">
 		<input type="hidden" name="module" class="modLinkModifier" value='CRM'>
 		<div class="form-wizard">
             <div class="form-body">
@@ -12,27 +16,25 @@
 					<div class='row'>
 						<div class= 'col-md-2 '>  
 							<div class='driverQuickInfoContainer leftSideContainer'>								
-								<div class="fileinput fileinput-new" data-provides="fileinput">
-                                    <div class="fileinput-preview thumbnail driverImgDisplay img-circle" data-trigger="fileinput" style=""> 
-                                    	<img src="images/profile/1.jpg">
-                                    </div>
-                                    <div>
-                                        <span class="btn red btn-outline btn-file">
-                                            <span class="fileinput-new"> Select image </span>
-                                            <span class="fileinput-exists"> Change </span>
-                                            <input name="..." type="file"> 
-                                        </span>
-                                        <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                    </div>
-                                </div>					
-								<div><label class="driverName bold color-green">Driver Name</label></div>
-								<div><label>LP Number</label></div>
-								<div><label>Location</label></div>
-								<div><label>Tel</label></div>
-								<div><label>Notice</label></div>
+								<?php $tabNo = 1; ?>
+								<?php $sec = $sections[$tabNo]; $fieldId = 188; ?>
+				        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+				        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>				        		
+			        			
+                                <!--<label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>-->
+                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+                                <!--<span class="help-block"> This is inline help </span>-->                                
+				        		
+				        		@endif					
+								<div><label class="leftSideDriverName bold color-green">Driver Name</label></div>
+								<div><label class="leftSideLpNumber">LP Number</label></div>
+								<div><label class="leftSideLocation">Location</label></div>
+								<div><label class="leftSideTel">Tel</label></div>
+								<div><label class="leftSideNotice">Notice</label></div>
 							</div>
 						</div>
 						<div class= 'col-md-10 rightSideContainer'>
+						<div class='container-fluid'>
 							<div class="tabbable-line ">
 							    <ul class="nav nav-tabs ">
 							    	<?php $count = 1; $active = 'active'; ?>
@@ -70,7 +72,7 @@
 							           		<?php $sec = $sections[$tabNo]; $fieldId = 80; ?>
 							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-							        		<div class='col-md-1'>
+							        		<div class=' col-md-2'>
 							        			<div class="form-group">
 			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
 			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
@@ -94,7 +96,7 @@
 							        		<?php $sec = $sections[$tabNo]; $fieldId = 81; ?>
 							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-							        		<div class='col-md-4'>
+							        		<div class='col-md-3'>
 							        			<div class="form-group">
 			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
 			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
@@ -300,12 +302,23 @@
 							           </div>
 							           <h5 class="bold">Additional Information</h5>
 							           <div class="row">
+       						           		<?php $sec = $sections[$tabNo]; $fieldId = 171; ?>
+       						        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+       						        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+       						        		<div class='col-md-3'>
+       						        			<div class="form-group">
+       		                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+       		                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+       		                                                <!--<span class="help-block"> This is inline help </span>-->
+       		                                     </div>
+       						        		</div>
+       						        		@endif
 							           		<?php $sec = $sections[$tabNo]; $fieldId = 91; ?>
 							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
 							        		<div class='col-md-2'>
 							        			<div class="form-group">
-			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
+			                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
 			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
 			                                                <!--<span class="help-block"> This is inline help </span>-->
 			                                     </div>
@@ -316,7 +329,7 @@
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
 							        		<div class='col-md-2'>
 							        			<div class="form-group">
-			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
+			                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
 			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
 			                                                <!--<span class="help-block"> This is inline help </span>-->
 			                                     </div>
@@ -327,7 +340,7 @@
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
 							        		<div class='col-md-2'>
 							        			<div class="form-group">
-			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
+			                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
 			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
 			                                                <!--<span class="help-block"> This is inline help </span>-->
 			                                     </div>
@@ -354,6 +367,19 @@
 							        </div>
 							        <div class="tab-pane" id="tab_3">
 							        	<?php $tabNo = 3; ?>
+							        	<div class="row">
+    				        				<?php $sec = $sections[$tabNo]; $fieldId = 57; ?>
+    						        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+    						        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+    						        		<div class='col-md-3'>
+    						        			<div class="form-group">
+    		                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
+    		                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+    		                                                <!--<span class="help-block"> This is inline help </span>-->
+    		                                     </div>
+    						        		</div>
+    						        		@endif
+							        	</div>
 							        	<div class='row'>
 							        		<?php $sec = $sections[$tabNo]; $fieldId = 44; ?>
 							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
@@ -515,17 +541,7 @@
 							        	<hr>
 							        	<h5 class='bold'>Driver Classification</h5>				        	
 					        			<div class="row">
-					        				<?php $sec = $sections[$tabNo]; $fieldId = 57; ?>
-							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-							        		<div class='col-md-2'>
-							        			<div class="form-group">
-			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-			                                                <!--<span class="help-block"> This is inline help </span>-->
-			                                     </div>
-							        		</div>
-							        		@endif
+					        				
 							        		<?php $sec = $sections[$tabNo]; $fieldId = 58; ?>
 							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
@@ -636,96 +652,22 @@
 							        </div>
 							        <div class="tab-pane" id="tab_4">
 							        	<?php $tabNo = 4; ?>
-							        	<h5 class='bold'>Adjustment</h5>
-							        	<div class='row'>
-							        		<?php $sec = $sections[$tabNo]; $fieldId = 67; ?>
-							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-							        		<div class='col-md-6'>
-							        			<div class="form-group">
-			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-			                                                <!--<span class="help-block"> This is inline help </span>-->
-			                                     </div>
-							        		</div>
-							        		@endif
-							        		<div class="row"><div class="col-md-6">
-								        		<?php $sec = $sections[$tabNo]; $fieldId = 68; ?>
-								        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-								        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-								        		<div class='col-md-12'>
-								        			<div class="form-group">
-				                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-				                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-				                                                <!--<span class="help-block"> This is inline help </span>-->
-				                                     </div>
-								        		</div>
-								        		@endif
-								        	</div></div>
-							        	</div>
+							        	<h5 class='bold hidden'>Adjustment</h5>
 
-							        	<div class='row'>
-							        		<?php $sec = $sections[$tabNo]; $fieldId = 69; ?>
-							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-							        		<div class='col-md-6'>
-							        			<div class="form-group">
-			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-			                                                <!--<span class="help-block"> This is inline help </span>-->
-			                                     </div>
-							        		</div>
-							        		@endif
-							        		<div class="row"> <div class="col-md-6">
-								        		<?php $sec = $sections[$tabNo]; $fieldId = 70; ?>
-								        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-								        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-								        		<div class='col-md-3'>
-								        			<div class="form-group">
-				                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-				                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-				                                                <!--<span class="help-block"> This is inline help </span>-->
-				                                     </div>
-								        		</div>
-								        		@endif
+        					        	<div class="row">
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 174; $gridFields = array(172,173,67,68,69,70,71,72,73); $gridUrl = array('gridfieldid'=> 174); ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-12'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        	</div>							        	
 
-								        		<?php $sec = $sections[$tabNo]; $fieldId = 71; ?>
-								        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-								        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-								        		<div class='col-md-3'>
-								        			<div class="form-group">
-				                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-				                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-				                                                <!--<span class="help-block"> This is inline help </span>-->
-				                                     </div>
-								        		</div>
-								        		@endif
-
-								        		<?php $sec = $sections[$tabNo]; $fieldId = 72; ?>
-								        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-								        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-								        		<div class='col-md-3'>
-								        			<div class="form-group">
-				                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-				                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-				                                                <!--<span class="help-block"> This is inline help </span>-->
-				                                     </div>
-								        		</div>
-								        		@endif
-
-								        		<?php $sec = $sections[$tabNo]; $fieldId = 73; ?>
-								        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
-								        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-								        		<div class='col-md-3'>
-								        			<div class="form-group">
-				                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
-				                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
-				                                                <!--<span class="help-block"> This is inline help </span>-->
-				                                     </div>
-								        		</div>
-								        		@endif
-							        		</div></div>
-							        	</div>
 							        	<h5 class='bold'>Payment Information</h5>
 							        	<div class="row">
 							        		<?php $sec = $sections[$tabNo]; $fieldId = 74; ?>
@@ -835,7 +777,7 @@
 							        		<?php $sec = $sections[$tabNo]; $fieldId = 107; ?>
 							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-							        		<div class='col-md-3'>
+							        		<div class='col-md-2'>
 							        			<div class="form-group">
 			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
 			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
@@ -857,7 +799,18 @@
 							        		<?php $sec = $sections[$tabNo]; $fieldId = 109; ?>
 							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
 							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
-							        		<div class='col-md-3'>
+							        		<div class='col-md-2'>
+							        			<div class="form-group">
+			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
+			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+			                                                <!--<span class="help-block"> This is inline help </span>-->
+			                                     </div>
+							        		</div>
+							        		@endif							        		
+							        		<?php $sec = $sections[$tabNo]; $fieldId = 187; ?>
+							        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+							        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+							        		<div class='col-md-2'>
 							        			<div class="form-group">
 			                                                <label class="control-label tab-header">{{$fields->tbl_fld_col_disp_name}}</label>
 			                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
@@ -877,6 +830,151 @@
 							        		</div>
 							        		@endif
 							        	</div>
+        					        	<div class="row">
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 175; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 176; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        	</div>
+        					        	<div class="row">
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 177; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 178; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        	</div>
+        					        	<div class="row">
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 179; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 180; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        	</div>
+        					        	<div class="row">
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 181; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 182; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        	</div>
+        					        	<div class="row">
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 183; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 184; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        	</div><div class="row">
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 185; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        		<?php $sec = $sections[$tabNo]; $fieldId = 186; ?>
+        					        		@if(isset($moduleFields->{$sec}->{ "field_".$fieldId }))
+        					        		<?php $fields = $moduleFields->{$sec}->{ "field_".$fieldId } ;?>
+        					        		<div class='col-md-2'>
+        					        			<div class="form-group">
+        	                                                <label class="control-label tab-header lblTxtHidden">{{$fields->tbl_fld_col_disp_name}}</label>
+        	                                                @include("FormFields.$fields->tbl_fld_fld_type_id")
+        	                                                <!--<span class="help-block"> This is inline help </span>-->
+        	                                     </div>
+        					        		</div>
+        					        		@endif
+        					        	</div>
+
+
 							        </div>
 							        <div class="tab-pane" id="tab_7">
 							        	<?php $tabNo = 9; ?>
@@ -944,7 +1042,7 @@
 							        </div>
 							    </div>
 							</div>				
-						</div>
+						</div></div>
 					</div>
 					@include("layouts.form_page_action_controls")
 				</div>
@@ -963,5 +1061,131 @@
 	        $('.file_upload_container').addClass('hidden');;
 	        $('.hidden-msg').removeClass('hidden');
 	    }
+
+	    $('.preffered_shift_patterns').click(function(){ preffered_shift_patterns_options(); });
+	    $('#firstname_usr,#lastname_usr,#lp_number,#mobile_usr').on('keyup',function(){ leftSideInfoDisplay(); });
+
+	    $('#dob_usr').parent().datepicker().on('show', function(e) { $('#dob_usr').parent().datepicker('setEndDate', '-17y'); });
+	    $('#employee_status').on("select2:select", function (e) { empStatusDateHide(); }); 
+	    $('#reason_for_leaving').on("select2:select", function (e) { reasonLeavingNotes(); });        
+	    
+	    $("#preffered_region").on("change", function () {
+	    	getDeposFromRegion(3,$("#preffered_region").val(),2,'#preffered_depo');	    	
+	    });   
+	    $('#employment_end_date,#employment_start_date').parent().datepicker().on('hide', function(e) {
+	        calculateLengthOfService();
+	    }); 
+	    	
+	    preffered_shift_patterns_options();
+	    leftSideInfoDisplay();
+		empStatusDateHide();   
+		reasonLeavingNotes();
+		calculateLengthOfService();
+		getDeposFromRegion(3,$("#preffered_region").val(),2,'#preffered_depo');
 	});
+
+	function getDeposFromRegion( org_lvl, id, rtnOrg_lvl, selector ){
+		href = '/Ajax/Organisation/' + org_lvl+'/' + id +'/' + rtnOrg_lvl ;
+		$.getJSON( href, data ,function( data ) {
+            var relatedOptions = [];
+            $.each( data, function( index, value ){
+                var option = new Option(value,index );
+                relatedOptions.push(option);
+            });
+			$( selector + " option[value]").remove();	          
+			$( selector ).append(relatedOptions).val("").trigger("change");
+        });
+	}
+
+	function preffered_shift_patterns_options(){
+	$('.preffered_shift_patterns').each( function (){ 
+			if ( $(this).is(":checked") ){
+				$(this).closest('div.row').find('div:nth-child(2) .input-group').show();
+			}else{
+				$(this).closest('div.row').find('div:nth-child(2) .input-group').hide();
+			}
+			
+		}); 
+	}
+
+	function leftSideInfoDisplay(){
+		var name = $('#firstname_usr').val() +  ' ' + $('#lastname_usr').val();
+		$('.leftSideDriverName').html(name);
+		var lp_number = $('#lp_number').val();
+		$('.leftSideLpNumber').html(lp_number);
+		var location = '';
+		$('.leftSideLocation').html(location);
+		var mobile_usr = $('#mobile_usr').val();
+		$('.leftSideTel').html(mobile_usr);
+		var note = 'Please ensure that we have the correct mobile phone number at all times';
+		$('.leftSideNotice').html(note);
+	}
+
+	function empStatusDateHide(){		
+
+		//$('#employment_start_date').parents('.form-group').hide();
+		$('#employment_end_date').parents('.form-group').hide();
+		$('#probation_end_period').parents('.form-group').hide();
+		$('#termination_date').parents('.form-group').hide();
+		var empStatusVal = parseInt($('#employee_status').val());
+
+		switch(empStatusVal) {
+		    case 1:
+		        $('#probation_end_period').parents('.form-group').show();
+		        break;
+		    case 2:
+		        $('#probation_end_period').parents('.form-group').show();
+		        break;
+		    case 3:
+		    	$('#probation_end_period').parents('.form-group').show();
+		    	$('#employment_end_date').parents('.form-group').show();
+		        break;
+		    case 4:
+		    	$('#probation_end_period').parents('.form-group').show();
+		    	$('#employment_end_date').parents('.form-group').show();
+		    	break;
+		    case 5:  
+		    	$('#probation_end_period').parents('.form-group').show();
+		    	$('#termination_date').parents('.form-group').show();
+		    	break;  
+		}
+	}
+
+	function reasonLeavingNotes(){
+		$('#leaving_notes').parents('.form-group').hide();
+		var reasonLeaving = parseInt($('#reason_for_leaving').val());
+		if ( reasonLeaving >= 1 ){
+			$('#leaving_notes').parents('.form-group').show();
+		}
+	}
+
+	function calculateLengthOfService(){
+		var endDate = null; var years = ''; var months = ''; var days = ''; var andMonths = ''; var andDays = '';
+		var empStatusVal = parseInt($('#employee_status').val());
+		var startDate = moment($('#employment_start_date').val(), "YYYY-MM-DD");
+		if ( empStatusVal == 3 || empStatusVal == 4  ) {
+			endDate = moment($('#employment_end_date').val(), "YYYY-MM-DD");
+		}else{
+			endDate = moment(); //$('#employment_end_date').val(), "YYYY-MM-DD"
+		}
+		var diffDuration = moment.duration(endDate.diff(startDate));
+		
+		if (diffDuration.years() > 0 ) { 
+			years = diffDuration.years() + ' Year'; 
+			if ( diffDuration.years() > 1 ) { years += 's '; } else { years += ' '; }
+		}
+		if (diffDuration.months() > 0 ) { 
+			months = diffDuration.months() + ' Month'; 
+			if ( diffDuration.months() > 1 ) { months += 's '; } else { months += ' '; }
+			if (years != '') { andMonths = ' And '; } 
+		}
+		if (diffDuration.days() > 0 ) { 
+			days = diffDuration.days() + ' Day'; 
+			if ( diffDuration.days() > 1 ) { days += 's '; } else { days += ' '; }
+			if (months != '') { andDays = ' And '; andMonths = ''; }			 
+		}
+		$('#length_of_service').val(years + andMonths + months + andDays + days);
+	}
 </script>
+
+

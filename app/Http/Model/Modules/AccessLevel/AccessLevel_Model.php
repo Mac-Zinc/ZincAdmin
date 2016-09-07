@@ -31,7 +31,7 @@ class AccessLevel_Model extends Model {
 
 	public function getModules(){
 		$value1=array('m_id','mod_title');
-		$mod1= DB::table('modules_mds')->select($value1)->orderBy('m_id', 'asc')->get();
+		$mod1= DB::table('modules_mds')->select($value1)->where('is_access_editable','=','1')->orderBy('m_id', 'asc')->get();
 
 		foreach ($mod1 as $key => $value) {
 			$modArr["'{$value->{$value1[0]}}'"] = $value->{$value1[1]};
@@ -45,7 +45,7 @@ class AccessLevel_Model extends Model {
 		$val = (int)trim($m_id,"'");
 		//echo $val; exit;
 		$value1=array('tbl_blk_id','tbl_blk_name');//
-		$mod1= DB::table('table_blocks')->select($value1)->where('tbl_blk_m_id','=', $val)->orderBy('tbl_blk_id', 'asc')->get();
+		$mod1= DB::table('table_blocks')->select($value1)->where('tbl_blk_m_id','=', $val)->where('is_grid','=', '0')->orderBy('tbl_blk_id', 'asc')->get();
 
 		foreach ($mod1 as $key => $value) {
 			$modArr["'{$value->{$value1[0]}}'"] = $value->{$value1[1]};

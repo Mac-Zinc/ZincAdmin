@@ -28,9 +28,9 @@ class ManningLevels extends Controller{
 		$this->ManningLevels_Model = new ManningLevels_Model;
 	}
 
-	public function getContractForm(Request $request,$weekNo=null){
+	public function getMLList(Request $request,$weekNo=null){
 		
-		$breadcrums = $this->getContractFormPageInfo(6);
+		$breadcrums = $this->getBreadCrums(6);
 		$originalWeekNo = date('W');
 		$weekNavURL = 'List/ManningLevels';
 		$headerType = 1;
@@ -54,7 +54,7 @@ class ManningLevels extends Controller{
 		   $driverIds[] =  $val->id_usr;
 		}	
 
-		$startNEndDate = $this->getStartAndEndDate($currentWeekNo, $currentWeekYear);
+		$startNEndDate = $this->getStartAndEndDate($currentWeekNo, $currentWeekYear,1);
 		$ManningLevelsData = $this->ManningLevels_Model->getManningLevels($driverIds, $startNEndDate[0]['fullDate'] , $startNEndDate[20]['fullDate']);
 /*
 		if($currentWeekNo == 1){
@@ -77,7 +77,7 @@ class ManningLevels extends Controller{
 		return view($this->layout, compact('breadcrums','currentWeekNo', 'currentWeekYear', 'startNEndDate','regions','organisations','drivers','MLForDay','MLForDayClr','ManningLevelsData','allDepot','showNextWeek','weekNavURL','headerType'));
 	}
 
-	public function getContractFormPageInfo($m_id){
+	public function getBreadCrums($m_id, $bool = false){
 		$data['Page_title'] = 'Manning Levels ';
 		$data['Page_title_info'] = 'Overview';
 		$data['Breadcrums'][0]['title'] = 'Home';
@@ -87,21 +87,6 @@ class ManningLevels extends Controller{
 		$data['Breadcrums'][2]['title'] = 'Individual View';
 
 		return $data;
-	}
-	public function getStartAndEndDate($week, $year) {
-		$dto = new \DateTime();		
-
-		$dto->setISODate($year, (int)$week)->format('d');
-		$dto->modify('-9 days')->format('d');
-		
-
-		for($i=0;$i<=20;$i++){
-			$ret[$i]['date'] = $dto->modify('+1 days')->format('d');
-			$ret[$i]['day'] = $dto->format('D');
-			$ret[$i]['fullDate'] = $dto->format('Y-m-d');
-		}
-		
-		return $ret;
 	}
 
 	public function saveMLQuickView(Request $request){
@@ -139,12 +124,16 @@ class ManningLevels extends Controller{
 		foreach ($drivers as $val) {			
 		   $driverIds[] =  $val->id_usr;
 		}
-		$startNEndDate = $this->getStartAndEndDate($request['currentWeekNo'], $request['currentWeekYear']);
+		$startNEndDate = $this->getStartAndEndDate($request['currentWeekNo'], $request['currentWeekYear'],1);
 		$ManningLevelsData = $this->ManningLevels_Model->getManningLevels($driverIds, $startNEndDate[0]['fullDate'] , $startNEndDate[20]['fullDate']);
 		return view($this->layout1, compact('startNEndDate','drivers','MLForDay','MLForDayClr','ManningLevelsData','allDepot'));
 	
 	}
 	public function getRecordsDriverLPFilter(Request $request){
 
+	}
+
+	public function createManningLevels($specificUserId = null, $specificWeekNo = null){
+		return $this->ManningLevels_Model->createManningLevels($specificUserId , $specificWeekNo);
 	}
 }

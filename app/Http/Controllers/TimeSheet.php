@@ -38,7 +38,7 @@ class TimeSheet extends Controller{
 		$currentWeekYear = date('Y');
 		$breadcrums = $this->getBreadCrums(3,true,$weekNo);
 		$usr_id = Auth::user()->id_usr;
-		$startNEndDate = $this->getStartAndEndDate($currentWeekNo, $currentWeekYear);
+		$startNEndDate = $this->getStartAndEndDate($currentWeekNo, $currentWeekYear,0);
 		$currentWeekTimeSheet = $this->TimeSheet_Model->getCurrentWeekTimeSheet($startNEndDate ,$usr_id , $currentWeekNo, $currentWeekYear);
 		return view($this->layout2, compact('breadcrums','currentWeekNo','startNEndDate','currentWeekYear', 'currentWeekTimeSheet','showNextWeek','weekNavURL','headerType'));
 	}
@@ -56,21 +56,7 @@ class TimeSheet extends Controller{
 			return $data;
 		}
 
-	public function getStartAndEndDate($week, $year) {
-		$dto = new \DateTime();		
-
-		$dto->setISODate($year, $week)->format('d');
-		$dto->modify('-2 days')->format('d');		
-
-		for($i=0;$i<7;$i++){
-			$ret[$i]['date'] = $dto->modify('+1 days')->format('d');
-			$ret[$i]['day'] = $dto->format('D');
-			$ret[$i]['month'] = $dto->format('F');
-			$ret[$i]['fullDate'] = $dto->format('Y-m-d');
-		}
-		//var_dump($ret); exit;
-		return $ret;
-	}
+	
 
 	public function saveWeeklyTimeSheet(Request $request){
 		
@@ -104,7 +90,7 @@ class TimeSheet extends Controller{
 		//$venues = $this->TimeSheet_Model->getVenues();  ,'regions','organisation','venues'
 		
 		$usr_id = Auth::user()->id_usr;
-		$startNEndDate = $this->getStartAndEndDate($currentWeekNo, $currentWeekYear);
+		$startNEndDate = $this->getStartAndEndDate($currentWeekNo, $currentWeekYear,0);
 		return view($this->layout, compact('breadcrums','currentWeekNo','startNEndDate','currentWeekYear','table','showNextWeek','weekNavURL','headerType'));
 	}
 

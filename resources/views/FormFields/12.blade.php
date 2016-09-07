@@ -4,6 +4,7 @@ if(isset($moduleFields->{$sec}->{ "displayValue_".$fieldId })){
 }else{ $value = ''; }
 
 ?>
+@if(isset($moduleFields->{$sec}->{"is_edit_".$fieldId}))
 <div class="input-group " style="display: inline-flex; width: 68%">
 <input type="text" placeholder="{{$fields->tbl_fld_place_holder}}" name="{{$fields->tbl_fld_tbl_col_name}}" id="{{$fields->tbl_fld_tbl_col_name}}" class="form-control timepicker {{$fields->tbl_fld_class}}" value='{{$value}}'><span class="input-group-btn"><button class="btn default" type="button"><i class="fa fa-clock-o"></i></button></span>
 </div>
@@ -59,3 +60,6 @@ if(isset($moduleFields->{$sec}->{ "displayValue_".$fieldId })){
 	    });
 	}
 </script>
+@elseif(isset($moduleFields->{$sec}->{"is_read_".$fieldId}))
+<label class='readonlyType'>{{$value}}</label>
+@endif

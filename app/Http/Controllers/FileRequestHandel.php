@@ -36,15 +36,26 @@ class FileRequestHandel extends BaseController {
 	}
 
 	public function getFiles(Request $request){
-
+		$docHubCat = array();
 		$whereArray = array('modID' => $request['modID'],'modPKey' => $request['modPKey'],'modFieldID' => $request['modFieldID'],);
+		$mod2 = DB::table('static_dropdown_field_values')->where('field_id','189')->get();
+		foreach ($mod2 as $rowIndex => $row) {
+			$docHubCat[$row->value] = $row->text;
+		}
+		$docHubCat[0] = 'N/A';
 		$mod1 = DB::table('documents_hub')->where($whereArray)->get();
 		$outputS = '<table class="table table-striped table-hover table-bordered dataTable no-footer"><thead><tr><th>Document Name</th><th>Date Uploaded</th><th>Category</th><th>File Size</th><th>File Type</th><th>Actions</th></tr></thead><tbody>';
 		foreach ($mod1 as $key => $value) {
+			$option = '';
+			foreach ($docHubCat as $docHubCatKey => $docHubCatValue) {
+				if($docHubCatKey == $value->doc_category ) { $selected = 'selected="selected"'; } else { $selected = ''; }
+				$option .= "<option value='{$docHubCatKey}' {$selected}>{$docHubCatValue}</option>";
+			}
+			$select = "<select class='docHubCatChanger' data-docId = '{$value->doc_id}'>$option</select>";
 			$destinationPath = "../storage/userfiles/{$value->modID}/{$value->modFieldID}/{$value->modPKey}/{$value->fileName}";
 			$bytes = $this->FileSizeConvert(File::size($destinationPath));  
-
-			$outputS = $outputS . "<tr><td>{$value->originalFileName}</td><td>{$value->created_date}</td><td>Nil</td><td>{$bytes}</td><td>File Type</td><td><a href='download/document/{$value->doc_id}'>Download</a>  <a href='javascript:void(0);' class ='delete' data-url='delete/document/{$value->doc_id}'>Delete</a>  </td></tr>";
+			$extension = strtoupper(File::extension($destinationPath));
+			$outputS = $outputS . "<tr><td>{$value->originalFileName}</td><td>{$value->created_date}</td><td>{$select}</td><td>{$bytes}</td><td>{$extension}</td><td><a href='download/document/{$value->doc_id}'>Download</a>  <a href='javascript:void(0);' class ='delete' data-url='delete/document/{$value->doc_id}'>Delete</a>  </td></tr>";
 		}
 		$outputS = $outputS . '</tbody></table>';
 		$data['status'] = 1 ;

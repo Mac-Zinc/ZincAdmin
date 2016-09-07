@@ -4,8 +4,9 @@ if(isset($moduleFields->{$sec}->{ "displayValue_".$fieldId })){
 }else{ $value = ''; }
 
 ?>
-<div class="input-group date date-picker {{$fields->tbl_fld_class}}" data-date-format="yyyy-mm-dd" data-alt-format = "dd-mm-yyyy">
-    <input type="text" class="form-control" readonly="" name="{{$fields->tbl_fld_tbl_col_name}}" id="{{$fields->tbl_fld_tbl_col_name}}" placeholder="{{$fields->tbl_fld_place_holder}}" value='{{$value}}'>
+@if(isset($moduleFields->{$sec}->{"is_edit_".$fieldId}))
+<div class="input-group date date-picker {{$fields->tbl_fld_class}}" >
+    <input type="text" class="form-control" readonly="" name="{{$fields->tbl_fld_tbl_col_name}}" id="{{$fields->tbl_fld_tbl_col_name}}" placeholder="{{$fields->tbl_fld_place_holder}}" value='{{$value}}' data-date-format='yyyy-mm-dd'/>
     <span class="input-group-btn">
         <button class="btn default" type="button">
             <i class="fa fa-calendar"></i>
@@ -20,9 +21,10 @@ var ComponentsDateTimePickers_{{$fields->tbl_fld_id}} = function () {
 	var handleDatePickers = function () {
 
         if (jQuery().datepicker) {
-            $('.date-picker').datepicker({
+            $('.input-group.date').datepicker({
                 rtl: App.isRTL(),
-                orientation: "left",
+                orientation: "auto",
+                format: "yyyy-mm-dd",
                 autoclose: true                
             });
             //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
@@ -49,3 +51,6 @@ if (App.isAngularJsApp() === false) {
     });
 }
 </script>
+@elseif(isset($moduleFields->{$sec}->{"is_read_".$fieldId}))
+<label class='readonlyType'>{{$value}}</label>
+@endif

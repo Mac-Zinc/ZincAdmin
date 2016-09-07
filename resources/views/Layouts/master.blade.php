@@ -33,9 +33,29 @@
         <link href="<?php echo asset('assets/layouts/layout2/css/custom.min.css');?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css');?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css');?>" rel="stylesheet" type="text/css" />
+        <link href="<?php echo asset('assets/global/plugins/select2/css/select2-bootstrap.min.css');?>" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="{{ $res['Site_favicon'] }}" /> 
         <style type="text/css">
+            label.readonlyType {
+                width: 100%;
+                border: 1px solid #c2cad8;
+                height: 34px;
+                background-color: #eef1f5;
+                padding: 6px 12px;
+            }
+            .row {
+                /*margin-left: -5px !important;
+                margin-right: -5px !important;*/
+            }
+            .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9{
+                /*padding-left: 5px !important;
+                padding-right: 5px !important;*/
+            }
+            .lblTxtHidden {
+               color: white;
+               visibility: hidden;
+            }        
             .screen_loader{
                 width: 100%;
                 z-index: 99999999;
@@ -140,16 +160,7 @@
             table.dataTable thead .sorting_desc::after {
                 content: "" !important;
             }
-            .select2-selection__choice, .select2-container .select2-search--inline {
-                float: left;
-                list-style: outside none none !important;
-            }
-            .select2-container {
-                border-radius: 15px;
-                border-style: solid;
-                border-width: 1px;
-                display: block;
-            }
+            
             .dataTables_filter {
                display: none;
             }
@@ -454,6 +465,39 @@
                 $( ".accessLevelSettingContainer" ).html( '' ); 
             }
            
+        });
+
+        $('.page-content').on('keydown','.phoneNumber',function( event ){
+            if ( event.shiftKey ){
+                if( event.which != 61){
+                    event.preventDefault();
+                }
+            }else if (! ((event.which >= 48 && event.which <= 57) || ( event.which == 32 ) || (event.which == 35 ) || ( event.which == 36 ) || (event.which == 46 ) || ( event.which == 37 ) || (event.which == 39 ) || ( event.which == 107 ) || (event.which == 8 ) || ( event.which == 16 )) ) {
+               event.preventDefault();
+               //var patt1 = /[0-9+ ]/g;
+               //^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))(\s?#(\d{4}|\d{3}))?$
+            }
+        });
+
+        $('.page-content').on('keydown','.alphaNumaricWithSpace',function( event ){
+            if ( event.shiftKey ){ 
+                if( !( (event.which >= 65 && event.which <= 90) || ( event.which == 32 ) || (event.which == 35 ) || ( event.which == 36 ) || (event.which == 46 ) || (event.which == 8 ) || ( event.which == 37 ) || (event.which == 39 ) || ( event.which == 16 ) )){
+                                event.preventDefault();
+                }
+
+            }else if( !( (event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90) || ( event.which == 32 ) || (event.which == 35 ) || ( event.which == 36 ) || (event.which == 46 ) || (event.which == 8 ) || ( event.which == 37 ) || (event.which == 39 ) || ( event.which == 16 ) )){
+                event.preventDefault();
+            }
+        });
+        $('.page-content').on('keydown','.alphaNumaric',function( event ){
+            if ( event.shiftKey ){ 
+                if( !( (event.which >= 65 && event.which <= 90) || (event.which == 35 ) || ( event.which == 36 ) || (event.which == 46 ) || (event.which == 8 ) || ( event.which == 37 ) || (event.which == 39 ) || ( event.which == 16 ) )){
+                                event.preventDefault();
+                }
+
+            }else if( !( (event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90) || (event.which == 35 ) || ( event.which == 36 ) || (event.which == 46 ) || (event.which == 8 ) || ( event.which == 37 ) || (event.which == 39 ) || ( event.which == 16 ) )){
+                event.preventDefault();
+            }
         });
 
         $('.page-content').on('change','#accessLevelUserTypeSelect' , function(){                        

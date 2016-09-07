@@ -76,6 +76,10 @@ class Organisation extends Controller{
 	public function listRowsAjax(Request $request){
 		return $this->Organisation_Model->getOrganisationRowsAjax($request);
 	}
+
+	public function getRelatedOrgs($org_lvl, $id, $rtn_org_type){
+		return $this->Organisation_Model->getRelatedOrgs($org_lvl, $id, $rtn_org_type);
+	}
 }
 
 ?>

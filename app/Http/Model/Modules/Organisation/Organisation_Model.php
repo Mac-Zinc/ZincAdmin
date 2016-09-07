@@ -107,5 +107,31 @@ class Organisation_Model extends NewModel {
 	
 	}
 
+	public function getRelatedOrgs($org_lvl, $id, $rtn_org_type){
+		$orgList = array();
+		switch ($org_lvl) {
+			case 1:
+				# code...
+				break;
+			case 2:
+				# code...
+				break;
+			case 3:
+				if( $rtn_org_type == 2 ) { $tbl = 'org_reg_vnu_map'; } elseif ($rtn_org_type == 1) { $tbl = 'org_reg_org_map'; }
+				break;	
+			default:
+				$tbl = null;				
+				break;
+		}
+		if ($tbl != null){
+			$mod1 = DB::table($tbl)->select('value','name')->join('organisation_org', 'organisation_org.id', '=', $tbl.'.value')->where('ref_id',$id)->get();
+			foreach ($mod1 as $j=>$m){
+				$orgList[$m->value] = $m->name;
+			}
+
+		}
+		return json_encode($orgList);
+	}
+
 }
 ?>

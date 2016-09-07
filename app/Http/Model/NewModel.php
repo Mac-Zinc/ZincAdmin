@@ -2,8 +2,11 @@
 namespace App\Http\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use File;
 use DB;
 use Auth;
+use Validator;
 class NewModel extends Model{
 
 	public function getSections($m_id,$grid = false, $gridBlkId = null ){
@@ -53,13 +56,27 @@ class NewModel extends Model{
 		$value1=array('tbl_fld_id','tbl_fld_max_length','tbl_fld_tbl_col_name','tbl_fld_fld_type_id','tbl_fld_col_disp_name','tbl_fld_col_disp_sht_name','tbl_fld_place_holder','tbl_fld_class','advance_function');
 		foreach ($Sec as $key => $value) {
 			$objectFields = new \stdClass();
-			//$objectFields = array();
-			$key = (int)trim($key,"'");			
-			$mod1= DB::table('table_fields')->select($value1)->where('tbl_fld_disp_blk_id','=', $key)->orderBy('tbl_fld_disp_blk_id', 'asc')->orderBy('tbl_fld_disp_order','asc')->get();
+			
+			
+			$key = (int)trim($key,"'");
+			$mod1 = DB::table('table_fields')->select($value1)->where('tbl_fld_disp_blk_id','=', $key);
+			if( isset($this->accessLevelDetails[$key]['blocked']) && $this->accessLevelDetails[$key]['blocked'] != '' ){
+				$mod1 = $mod1->whereNotIn('tbl_fld_id', $this->accessLevelDetails[$key]['blocked']);				
+			}			
+			$mod1 = $mod1->orderBy('tbl_fld_disp_blk_id', 'asc')->orderBy('tbl_fld_disp_order','asc')->get();
 
 			foreach ($mod1 as $key1 => $fields) {
+				if ( ! $grid ){
+					if (in_array($fields->tbl_fld_id, $this->accessLevelDetails[$key]['is_read'])){
+						$objectFields->{"is_read_".$fields->tbl_fld_id} = true;
+					}
+					if (in_array($fields->tbl_fld_id, $this->accessLevelDetails[$key]['is_edit'])){
+						$objectFields->{"is_edit_".$fields->tbl_fld_id} = true;
+					}
+					
+				}
 				$objectFields->{"field_".$fields->tbl_fld_id} = $fields;
-				if( in_array($fields->tbl_fld_fld_type_id, array(1,2,3,5))) {
+				if( in_array($fields->tbl_fld_fld_type_id, array(1,2,3,5,6,7))) {
 					if(isset($savedRecord[0])){									
 						if($fields->tbl_fld_tbl_col_name != 'asd'){
 							$objectFields->{"displayValue_".$fields->tbl_fld_id} = $savedRecord[0]->{$fields->tbl_fld_tbl_col_name};
@@ -186,9 +203,28 @@ class NewModel extends Model{
 						if(isset($data[$fields->tbl_fld_tbl_col_name]) && $data[$fields->tbl_fld_tbl_col_name] != ''){
 							$dataArray[$fields->tbl_fld_tbl_col_name] = $data[$fields->tbl_fld_tbl_col_name];
 						}else{
-							$dataArray[$fields->tbl_fld_tbl_col_name] = null;
+							//$dataArray[$fields->tbl_fld_tbl_col_name] = null;
 						}
 
+					}
+					if( in_array($fields->tbl_fld_fld_type_id, array(7))){
+						if ($data->hasFile($fields->tbl_fld_tbl_col_name)){
+							$files = $data->file($fields->tbl_fld_tbl_col_name);
+							$rules = array('file' => 'required|mimes:png,gif,jpeg');
+							$destinationPath = "../storage/userfiles/profile/";
+							$validator = Validator::make(array('file'=> $files), $rules);
+							if($validator->passes()){
+								$originalName = $files->getClientOriginalName();							
+								$extension = '.jpeg';
+								$randomString = mt_rand();
+								$filename = "{$randomString}_{$originalName}{$extension}";	
+								$upload_success = $files->move($destinationPath, $filename);
+								$dataArray[$fields->tbl_fld_tbl_col_name] = 'profile/'.$filename;
+							}
+							
+						}else{
+							//$dataArray[$fields->tbl_fld_tbl_col_name] = null;
+						}
 					}
 					if( in_array($fields->tbl_fld_fld_type_id, array(4))){
 						if(isset($data[$fields->tbl_fld_tbl_col_name]) && $data[$fields->tbl_fld_tbl_col_name] == 'on'){
@@ -276,7 +312,7 @@ class NewModel extends Model{
 		$table = $newTable[0];
 		$whereArray =  array('id' => $gPKey );
 
-		$mod2= DB::table('table_fields')->select('*')->where('tbl_fld_disp_blk_id',$blkId)->orderBy('tbl_fld_disp_order', 'asc')->skip(2)->take(4)->get();; // make sure the order of post is maintained else fields may mismatch // skip the primary id field
+		$mod2= DB::table('table_fields')->select('*')->where('tbl_fld_disp_blk_id',$blkId)->orderBy('tbl_fld_disp_order', 'asc')->skip(2)->take(100)->get();; // make sure the order of post is maintained else fields may mismatch // skip the primary id field
 		$queries = DB::getQueryLog();
 		$last_query = end($queries);
 		
@@ -323,4 +359,75 @@ class NewModel extends Model{
 		}
 		return $modArr;
 	}
-}
+
+	public function getAccessLevels( $modId ){
+		$accessLevelDetails = array();
+		$modulesTablePKFields = array(1=>'id_usr',3=>'id',5=>'id',6=>'id',7=>'id',8=>'doc_id');
+		// list page filter chk
+		$id_usr = Auth::user()->id_usr;
+		$level_usr = Auth::user()->level_usr;
+		if ($level_usr == 2) {			
+			$accessLevelDetails['listPageFilter'] = "{$modulesTablePKFields[$modId]} = {$id_usr}";
+		}
+		$accessLevelDetails['addButton'] = true;
+		if( in_array($modId, array ( 1,5,7 ) ) ) {
+			if ($level_usr == 2) { 
+				$accessLevelDetails['addButton'] = false; 
+			}			
+		}
+
+		$Sec = $this->getSections($modId, false , null );
+		
+		$userAccessSet= DB::table('roles_mod_field_link')->where('rmfl_type','=', '3')->count();
+		
+		foreach ($Sec as $key => $value) {
+			$blockedFieldIds = array();			
+			$key = (int)trim($key,"'");			
+			$mod2= DB::table('table_fields')->select('tbl_fld_id')->where('tbl_fld_disp_blk_id','=', $key)->orderBy('tbl_fld_disp_blk_id', 'asc')->orderBy('tbl_fld_disp_order','asc')->get();
+			
+
+			foreach ($mod2 as $key1 => $fields) {
+				if( $userAccessSet ){
+					$mod3 =  DB::table('roles_mod_field_link')->where('rmfl_type','=', '3')->where('rmfl_type_id','=',$id_usr);
+				}else{
+					$mod3 =  DB::table('roles_mod_field_link')->where('rmfl_type','=', '1')->where('rmfl_type_id','=',$level_usr);
+				}
+				//$mod3 = $mod1;
+				//echo $mod3->tosql();
+				$mod3 = $mod3->where('mfl_id','=',$fields->tbl_fld_id)->first();
+				$queries = DB::getQueryLog();
+				$last_query = end($queries);
+				//echo $mod3; exit;
+				if ( ! $mod3 == null) {
+					if( $mod3->is_no_access ){
+						$blockedFieldIds[] =  $mod3->mfl_id;						
+					}
+					if( $mod3->is_read ){
+						$readOnlyFieldIds[] =  $mod3->mfl_id;						
+					}
+					if( $mod3->is_edit ){
+						$writeOnlyFieldIds[] =  $mod3->mfl_id;						
+					}
+					if( $mod3->is_add ){
+						$addOnlyFieldIds[] =  $mod3->mfl_id;						
+					}
+					if( $mod3->is_delete ){
+						$deleteOnlyFieldIds[] =  $mod3->mfl_id;						
+					}
+					if( ! ( $mod3->is_no_access || $mod3->is_read || $mod3->is_edit ) ){
+						$readOnlyFieldIds[] =  $fields->tbl_fld_id;  // If all three fields blank  assume full access
+						$writeOnlyFieldIds[] =  $fields->tbl_fld_id; // If all three fields blank  assume full access
+					}
+				}else{
+					$readOnlyFieldIds[] =  $fields->tbl_fld_id;  // If no entry assume full access
+					$writeOnlyFieldIds[] =  $fields->tbl_fld_id; // If no entry assume full access
+				}
+				
+			}
+			$accessLevelDetails[$key]['blocked'] = $blockedFieldIds;
+			$accessLevelDetails[$key]['is_read'] = $readOnlyFieldIds;
+			$accessLevelDetails[$key]['is_edit'] = $writeOnlyFieldIds;
+		}
+		return $accessLevelDetails;
+	}
+}		

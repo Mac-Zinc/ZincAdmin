@@ -26,7 +26,7 @@ Route::get('AccessLevel/{id}', 'AccessLevel@getAccessLevelAreas');
 Route::post('AccessLevelSection', 'AccessLevel@getAccessLevelSection');
 Route::post('AccessLevelSectionBlock', 'AccessLevel@getAccessLevelFields');
 
-
+Route::get('testML/{specificUserId?}/{specificWeekNo?}', 'ManningLevels@createManningLevels');
 
 
 
@@ -34,8 +34,8 @@ Route::get('Dashboard', 'CRM@getCRMList');
 
 
 Route::group(['prefix' => 'List'], function(){
-	Route::get('ManningLevels/{weekNo?}', 'ManningLevels@getContractForm');
-	Route::post('ManningLevels/{weekNo?}', 'ManningLevels@getContractForm');
+	Route::get('ManningLevels/{weekNo?}', 'ManningLevels@getMLList');
+	Route::post('ManningLevels/{weekNo?}', 'ManningLevels@getMLList');
 	Route::post('ManningLevels/page/load', 'ManningLevels@getRecords');
 	//Route::post('ManningLevels/page/driverLPFilter', 'ManningLevels@getRecordsDriverLPFilter');
 
@@ -87,4 +87,8 @@ Route::group(['prefix' => 'ListRowsAjax'], function(){
 Route::group(['prefix' => 'Edit'], function(){
 	//Route::group(['prefix' => 'CRM'], function(){});
 	Route::post('CRM/{fieldID}/{pKey}/{ref_id?}', 'CRM@gridSave');
+});
+Route::group(['prefix' => 'Ajax'], function(){
+	//Route::group(['prefix' => 'CRM'], function(){});
+	Route::get('Organisation/{org_lvl}/{id}/{rtn_org_type}', 'Organisation@getRelatedOrgs');
 });

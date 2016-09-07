@@ -129,4 +129,82 @@ class ManningLevels_Model extends Model {
 
 		return $modArr;
 	}
+
+	public function createManningLevels($specificUserId , $specificWeekNo){
+		$arrayWeekDayTime = array ('preffered_time_sun',  'preffered_time_mon', 'preffered_time_tue',  'preffered_time_wed', 'preffered_time_thrs', 'preffered_time_fri', 'preffered_time_sat');
+		$arrayWeekDay = array('preffered_shift_patterns_sun', 'preffered_shift_patterns_mon', 'preffered_shift_patterns_tue', 'preffered_shift_patterns_wed', 'preffered_shift_patterns_thrs', 'preffered_shift_patterns_fri', 'preffered_shift_patterns_sat');
+		$getAllDriversList = DB::table('users_usr')->where('level_usr','=',2);
+		if( $specificUserId  != null ){	
+			if ( $specificUserId == 'All' ){
+
+			}elseif ( ! is_array($specificUserId)) { 
+				settype($specificUserId, "array"); 
+				$getAllDriversList = $getAllDriversList->whereIn('id_usr',$specificUserId);
+			}	
+			
+		}
+		if( $specificWeekNo  == null ){
+			$currentWeekNo = date('W');
+			$weekToGenrate[] = $currentWeekNo + 3;
+		}else{
+			$weekToGenrate[] = $specificWeekNo;
+		}
+
+		$getAllDriversList = $getAllDriversList->get();
+
+		foreach ($getAllDriversList as $index => $row) {
+			$shift_pattern_for_day = '';
+			foreach ($weekToGenrate as $weekIndex => $weekNo) {				
+				$yr = date('Y');
+				$rate_for_day = 0; // This needs to be looked into
+				$dto = new \DateTime();
+				$dto->setISODate( $yr, $weekNo )->format('d');
+				$dto->modify("-2 days")->format('d');
+				for($i=0;$i<7;$i++){
+					$dto->modify('+1 days')->format('d');
+					if( $row->{$arrayWeekDay[$i]}){
+						$mannig_lvl_day = 1;
+					}else{
+						$mannig_lvl_day = 5;
+					}
+					$dataArray = array( 
+					'id' => null, 
+					'usr_id' => $row->id_usr,
+					'mannig_lvl_day' => $mannig_lvl_day,
+					'week_no' => $weekNo,
+					'year_no' => $yr,
+					'mod_id' => 6,
+					'date' => $dto->format('Y-m-d'),
+					'start_time' => $row->{$arrayWeekDayTime[$i]},
+					'Job_type' => $row->driver_class, 
+					'rate_for_day' => $rate_for_day,
+					'depot_for_day' => $row->preffered_depo,
+					'shift_pattern_for_day' => $shift_pattern_for_day,
+					'region' => $row->preffered_region,
+					'is_timesheet' => 0, 
+					'is_self_bill' => 0,
+					'is_invoiced' => 0,
+					'is_locked' => 0,
+					'locked_usr_id' => null, 
+					'locked_time' => null			
+					);
+					$whereArray = array (
+							'usr_id' => $row->id_usr,
+							'year_no' => $yr,
+							'week_no' => $weekNo,
+							'date' => $dto->format('Y-m-d')
+						);
+					$record = DB::table('manning_levels')->where($whereArray)->first();
+					if (is_null($record)) {
+					    $mod1 = DB::table('manning_levels')->insertGetId($dataArray);
+					    //echo '<pre><div>'; var_dump($dataArray); echo '</div></pre>';	
+					} else {
+					    //DB::table($table)->where($whereArray)->update($dataArray);
+					    //$insertId = $data[$this->primaryKey];
+					}				
+				}				
+			}
+		}		
+		
+	}
 }
